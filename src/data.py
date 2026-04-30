@@ -1,30 +1,21 @@
-"""Student-owned dataset loading contract.
-
-Students must implement ``load_dataset_split`` so that ``scripts/main.py`` can
-evaluate every configured model on the same test split.
-"""
-
-from __future__ import annotations
-
-from typing import Any
+from nba_api.stats.endpoints import playercareerstats
+from sklearn.model_selection import train_test_split
 
 
-def load_dataset_split() -> tuple[Any, Any, Any, Any]:
-    """Return the dataset split used for model evaluation.
+def load_dataset_split():
+    player_id = "2544"  # LeBron James
 
-    Expected return value:
-        A tuple ``(X_train, X_test, y_train, y_test)``.
+    career = playercareerstats.PlayerCareerStats(player_id=player_id)
+    df = career.get_data_frames()[0]
 
-    Constraints:
-    - ``X_train`` and ``X_test`` must contain feature data in a format accepted
-      by the trained models stored in ``config.MODELS``.
-    - ``y_train`` and ``y_test`` must contain the corresponding targets.
-    - ``y_test`` must align with the predictions produced by each loaded model.
+    # features propres
+    df = df[["PTS", "REB", "AST", "FG_PCT", "MIN"]].dropna()
 
-    Typical choices for the return types are ``pandas.DataFrame`` /
-    ``pandas.Series`` or ``numpy.ndarray``.
-    """
+    X = df.drop(columns=["PTS"])
+    y = df["PTS"]
 
-    raise NotImplementedError(
-        "Implement data.load_dataset_split() before running scripts/main.py."
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
     )
+
+    return X_train, X_test, y_train, y_test
