@@ -1,22 +1,27 @@
-# Assignment 1 - NBA Points Prediction
+# Assignment 1 - NBA Points Prediction Project
 
-**Nom du dataset :** NBA League Game Logs (Saisons 2020-2025)
-**Source :** API officielle NBA via la librairie `nba_api`
-**Lien :** https://github.com/swar/nba_api
-**Type de données :** Données tabulaires structurées (statistiques de matchs)
+## 1. Informations sur le Dataset
+* **Nom du dataset :** NBA League Game Logs (Multi-Seasons)
+* **Source :** API officielle de la NBA via la bibliothèque Python `nba_api`.
+* **Lien :** [https://github.com/swar/nba_api](https://github.com/swar/nba_api)
+* **Type de données :** Données tabulaires structurées (séries temporelles de statistiques de performance par match).
 
-**Variable cible (Target) :** `PTS` (Points marqués par match)
+## 2. Définition du Problème ML
+* **Variable cible (Target) :** `PTS` (Nombre de points marqués par un joueur lors d'un match).
+* **Type de ML :** Apprentissage supervisé - **Régression**.
+* **Features principales :** * `MIN` (Minutes jouées)
+    * `FGA` / `FG_PCT` (Tentatives et adresse au tir)
+    * `FG3A` / `FG3_PCT` (Tentatives et adresse à 3 points)
+    * `AST` (Passes décisives)
+    * `REB` (Rebonds)
+    * `PLUS_MINUS` (Impact global sur le score)
 
-**Features principales :** - Minutes jouées (MIN)
-- Adresse au tir (FG_PCT, FG3_PCT)
-- Volume de tir (FGA, FG3A)
-- Passes et rebonds (AST, REB)
-- Impact global (PLUS_MINUS)
+## 3. Qualité des Données et Checks
+* **Données manquantes :** * **0%** de valeurs manquantes. 
+    * *Note :* Un nettoyage a été effectué directement via le script d'importation (`src/data.py`) pour supprimer les entrées incomplètes et filtrer les joueurs ayant joué moins de 5 minutes.
+* **Détection des Outliers :** * Méthode utilisée : **Interquartile Range (IQR)**.
+    * **Décision :** Les outliers ont été identifiés (notamment les performances à plus de 50 points) mais **conservés**. En NBA, ces données représentent des performances d'élite réelles et non des erreurs de mesure ; elles sont cruciales pour que le modèle apprenne les hauts scores.
+* **Feature Drift & Distribution :** * Les distributions des variables comme `MIN` et `PTS` ont été vérifiées par histogrammes. Elles présentent une distribution normale décalée, cohérente avec la réalité du temps de jeu en ligue professionnelle.
 
-**Qualité des données :**
-- **Valeurs manquantes :** 0% (nettoyage effectué lors de l'import)
-- **Outliers :** Identifiés via boxplot (scores > 50-60 points), conservés car ils représentent des performances réelles d'élite.
-- **Volume :** Environ XXXXX lignes (inscris ici le nombre exact que tu as eu).
-
-**Limites éventuelles :**
-Le dataset ne prend pas en compte l'état de fatigue (back-to-back) ou les blessures en cours de match qui peuvent fausser les prédictions.
+## 4. Limites éventuelles
+* Le dataset ne contient pas de données contextuelles externes comme l'état de fatigue (matchs joués deux jours de suite / back-to-back), les blessures mineures non signalées, ou l'avantage du terrain (Home/Away), ce qui pourrait limiter la précision absolue du modèle.
