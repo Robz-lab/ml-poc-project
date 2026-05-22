@@ -1,3 +1,21 @@
+# NBA Points Prediction - Projet Data Science
+
+## Description du projet
+Ce projet prédit le nombre de points marqués par un joueur NBA lors d’un match, en utilisant des données historiques (saisons 2022-23 à 2025-26).  
+Les features incluent : moyennes mobiles de performance, fatigue (back‑to‑back), avantage du terrain, force défensive adverse (target encoding).  
+Trois modèles sont comparés : Baseline (Moving Average), XGBoost et Random Forest optimisé par Optuna.  
+Une application Streamlit interactive permet d’explorer les données et de tester les prédictions.
+
+## Guide pour récupérer les données
+1. Cloner le dépôt :  
+   `git clone https://github.com/Robz-lab/ml-poc-project.git`
+2. Installer les dépendances :  
+   `pip install -r requirements.txt`
+3. Télécharger les données (via l’API NBA) :  
+   `python scripts/main.py` (ou `python src/data.py`)
+4. Lancer l’application Streamlit :  
+   `streamlit run src/app.py`
+
 # ML Project Template
 
 This repository is the base template that each student will fork and adapt for the final machine learning proof-of-concept project.
